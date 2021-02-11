@@ -1,8 +1,12 @@
 .Board {
   display: grid;
-  background-color: orangered;
   grid-template-columns: repeat(8, 1fr);
   grid-template-rows: repeat(8, 1fr);
-  height: 300px;
-  width: 300px;
+}
+
+.Container {
+  resize: both;
+  overflow: auto;
+  min-height: 300px;
+  min-width: 300px;
 }
