@@ -1,12 +1,6 @@
-interface Props {
-    color: string
-}
+import {square} from "./Square.test";
 
-interface square {
-    (props: Props): JSX.Element
-}
-
-const Square: square = ({color}) => {
-    return (<div data-test={"board-square"} style={{backgroundColor: color}} className={"Square"}></div>)
+const Square: square = ({color, children}) => {
+    return (<div data-test={"board-square"} style={{backgroundColor: color}} className={"Square"}>{children}</div>)
 }
 export default Square

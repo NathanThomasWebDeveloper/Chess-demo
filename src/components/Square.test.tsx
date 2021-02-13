@@ -7,6 +7,17 @@ const defaultProps = {
     color: "white"
 }
 
+interface Props {
+    color: string,
+    children?: any,
+    key?: string
+}
+
+export interface square {
+    (props: Props): JSX.Element
+}
+
+
 const setup = (props = {}) => {
     const setupProps = {...defaultProps, ...props}
     return shallow(<Square {...setupProps} />)
