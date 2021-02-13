@@ -31,7 +31,19 @@ describe('sizes are correct', () => {
                 for (let i = 0; i < elements.length; i++) {
                     expect(elements[i].getBoundingClientRect().height).to.be.equal(height)
                 }
-
+            })
+    })
+    it('size of each pieces is equal to or less than than a square', function() {
+        cy.getBySel('board-square').should('be.visible')
+            .then(elements => {
+                const height = elements[0].getBoundingClientRect().height
+                cy.getBySel('piece-img').should('be.visible')
+                    .then(elements => {
+                        for (let i = 0; i < elements.length; i++) {
+                            expect(elements[i].getBoundingClientRect().height).to.be.at.most(height)
+                            expect(elements[i].getBoundingClientRect().width).to.be.at.most(height)
+                        }
+                    })
             })
     })
 })
