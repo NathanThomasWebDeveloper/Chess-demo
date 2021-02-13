@@ -2,11 +2,13 @@ import React from 'react';
 import Piece from './Piece';
 import {shallow} from 'enzyme';
 import {findByTestAttr} from "../testing/utils";
+import {PieceName} from "../typescript/types";
 
 interface Props {
-    color: "black" | "white",
-    name: "KING" | "QUEEN" | "ROOK" | "BISHOP" | "KNIGHT" | "PAWN",
-    maxPieceDimension: number
+    color: "BLACK" | "WHITE",
+    name: PieceName
+    squareSize: number,
+    position: [number, number]
 }
 
 export interface piece {
@@ -14,9 +16,10 @@ export interface piece {
 }
 
 const defaultProps: Props = {
-    color: "white",
-    maxPieceDimension: 0,
-    name: "PAWN"
+    color: "WHITE",
+    squareSize: 0,
+    name: "PAWN",
+    position: [2, 2]
 }
 
 const setup = (props = {}) => {
