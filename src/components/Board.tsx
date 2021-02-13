@@ -4,17 +4,22 @@ import {boardColors} from '../constants';
 import Square from "./Square";
 import Piece from "./Piece";
 import {useMeasure} from "react-use";
+import {board} from "./Board.test";
 
-const Board = () => {
+const Board: board = ({piecesToRender}) => {
     const [ref, {width, height}] = useMeasure();
     const [boardSize, setBoardSize] = useState<number>(300);
-    const [maxPieceDimension, setMaxPieceDimension] = useState<null | number>(null);
+    const [squareSize, setSquareSize] = useState<null | number>(null);
+
 
     useEffect(() => {
         const max = (width > height) ? height : width
         setBoardSize(max)
-        setMaxPieceDimension(Math.floor(max / 8))
+        setSquareSize(max / 8)
     }, [width, height])
+
+    const pieceElements = squareSize && piecesToRender.map(({color, name, position}) => <Piece squareSize={squareSize}
+                                                                                  color={color} name={name} position={position}/>)
 
     return (<>
             <div
@@ -26,8 +31,8 @@ const Board = () => {
                         <Square key={color + index} color={color}/>
                     ))}
                 </div>
+                {pieceElements}
             </div>
-            {maxPieceDimension && (<Piece maxPieceDimension={maxPieceDimension} color={'black'} name={'PAWN'}/>)}
         </>
     )
 }

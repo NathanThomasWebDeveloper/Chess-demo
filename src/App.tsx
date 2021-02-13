@@ -1,5 +1,7 @@
 import Board from "./components/Board";
 import {Color, PieceName} from "./typescript/types";
+import PieceButton from "./components/PieceButton";
+import styles from './App.module.scss'
 
 function App() {
 
@@ -22,8 +24,9 @@ function App() {
     }
 
     return (
-        <div data-test={"App"} className="App">
+        <div data-test={"App"} className={styles.App}>
             <Board {...defaultProps} />
+            <PieceButton />
         </div>
     );
 }
