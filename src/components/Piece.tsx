@@ -3,6 +3,7 @@ import styles from "./Piece.module.scss";
 import Pawn from '../assets/images/pawn.svg';
 
 const Piece: piece = ({color, squareSize, name = "PAWN", position}) => {
+
     let img
     switch (name) {
         // fixme to be expanded with other pieces
