@@ -2,24 +2,27 @@ import React from 'react';
 import Piece from './Piece';
 import {shallow} from 'enzyme';
 import {findByTestAttr} from "../testing/utils";
-import {PieceName} from "../typescript/types";
+import {PiecesWithEmittersAndSize} from "../typescript/types";
 
-interface Props {
-    color: "BLACK" | "WHITE",
-    name: PieceName
-    squareSize: number,
-    position: [number, number]
-}
 
 export interface piece {
-    (props: Props): JSX.Element
+    (props: PiecesWithEmittersAndSize): JSX.Element
 }
 
-const defaultProps: Props = {
+const defaultProps: PiecesWithEmittersAndSize = {
     color: "WHITE",
-    squareSize: 0,
     name: "PAWN",
-    position: [2, 2]
+    position: [2, 2],
+    squareSize: 100,
+    id: "_324234242344",
+    inPlay: true,
+    emitSelect: () => "_324234242344",
+    emitMove: () => ({
+        id: "_324234242344",
+        from: [1, 2],
+        to: [1, 3]
+    })
+
 }
 
 const setup = (props = {}) => {

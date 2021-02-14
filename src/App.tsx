@@ -35,7 +35,6 @@ function App() {
                     if (!notIn) {
                         return location
                     }
-                    console.log(notIn.find(forbiddenLocation => forbiddenLocation === location), location)
 
                     // if in list of excluded, create another location
                     if (notIn.find(forbiddenLocation => forbiddenLocation[0] === location[0] && forbiddenLocation[1] === location[1]) !== undefined) {

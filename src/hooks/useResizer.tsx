@@ -3,12 +3,13 @@ import {useEffect, useState} from "react";
 import {UseMeasureRef} from "react-use/lib/useMeasure";
 
 interface UseResizer {
-    (minBoardSize?: number) : [
+    (minBoardSize?: number): [
         UseMeasureRef,
         number,
-        number | null
+            number | null
     ]
 }
+
 const useResizer: UseResizer = (minBoardSize = 300) => {
 
     const [ref, {width, height}] = useMeasure();
