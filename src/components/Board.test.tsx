@@ -1,10 +1,8 @@
 import React from 'react';
-import {shallow, mount, render} from 'enzyme';
+import {shallow, mount} from 'enzyme';
 import {findByTestAttr} from "../testing/utils";
 import Board from './Board';
 import {PieceName, Color} from "../typescript/types";
-import {act} from "@testing-library/react";
-
 
 interface pieceToRender {
     name: PieceName,
@@ -116,14 +114,14 @@ test('render 64 squares', () => {
 })
 
 test('renders n piece components equal to piecesToRender received to board as props', async () => {
-    const piecesToRender: pieceToRender[] =  [{
+    const piecesToRender: pieceToRender[] = [{
         name: "PAWN",
         position: ([3, 7] as [number, number]),
         color: "BLACK"
     }
     ]
 
-    const wrapper =  mount(<Board piecesToRender={piecesToRender} />)
+    const wrapper = mount(<Board piecesToRender={piecesToRender}/>)
     const components = findByTestAttr(wrapper, 'component-piece')
     expect(components.length).toBe(piecesToRender.length)
 

@@ -17,3 +17,12 @@ export const boardColors = (() => {
     })
 })()
 
+type PlacementContraints = {
+    [key: string]: number[][];
+};
+
+export const placementContraints: PlacementContraints = {
+    // not 1st nor 8th row
+    PAWN: [...Array(8).fill(null).map((position, index) => [1 + index, 8]),
+        ...Array(8).fill(null).map((position, index) => [1 + index, 1])]
+}

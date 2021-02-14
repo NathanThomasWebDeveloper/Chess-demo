@@ -11,7 +11,7 @@ const Board: board = ({piecesToRender}) => {
     const [boardSize, setBoardSize] = useState<number>(300);
     const [squareSize, setSquareSize] = useState<null | number>(null);
 
-
+    console.log(squareSize, piecesToRender)
     useEffect(() => {
         const max = (width > height) ? height : width
         setBoardSize(max)
@@ -19,7 +19,8 @@ const Board: board = ({piecesToRender}) => {
     }, [width, height])
 
     const pieceElements = squareSize && piecesToRender.map(({color, name, position}) => <Piece squareSize={squareSize}
-                                                                                  color={color} name={name} position={position}/>)
+                                                                                               color={color} name={name}
+                                                                                               position={position}/>)
 
     return (<>
             <div

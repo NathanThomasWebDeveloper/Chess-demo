@@ -2,14 +2,19 @@ import React from 'react';
 import PieceButton from './PieceButton';
 import {shallow} from 'enzyme';
 import {findByTestAttr} from "../testing/utils";
-interface Props {
 
+interface Props {
+    click: any
 }
 
 export interface pieceButton {
     (props: Props): JSX.Element
 }
-const defaultProps = {}
+
+const defaultProps = {
+    click: () => {
+    }
+}
 
 const setup = (props = {}) => {
     const setupProps = {...defaultProps, ...props}

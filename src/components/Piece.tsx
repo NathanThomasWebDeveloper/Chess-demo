@@ -10,8 +10,8 @@ const Piece: piece = ({color, squareSize, name = "PAWN", position}) => {
             img = Pawn
     }
     const sty = {
-        left: (position[0]-1)*squareSize,
-        top: squareSize*8 - ((position[1])*squareSize),
+        left: (position[0] - 1) * squareSize,
+        top: squareSize * 8 - ((position[1]) * squareSize),
     }
     const styImg = {
         filter: color === 'BLACK' ? 'brightness(0%)' : 'unset'
