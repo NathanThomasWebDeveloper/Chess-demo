@@ -1,0 +1,13 @@
+.Square {
+  display: grid;
+  place-content: center;
+  grid-template-rows: 50%;
+  grid-template-columns: 50%;
+  &.Selected {
+    background-color: #82F09E !important;
+  }
+  & .Highlighted {
+    background-color: #82F09E;
+    border-radius: 50%;
+  }
+}

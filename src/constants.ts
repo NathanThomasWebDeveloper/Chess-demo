@@ -1,6 +1,9 @@
-export const boardColors = (() => {
+export const boardSpecs = (() => {
     let color: "#7d8796" | "#e8ebef" = "#e8ebef"
+    let x = 1
+    let y = 9
     return Array(64).fill("").map((square, index) => {
+
         const switchColor = () => {
             if (color === "#7d8796") {
                 color = "#e8ebef"
@@ -11,9 +14,15 @@ export const boardColors = (() => {
         switchColor()
         if (index % 8 === 0) {
             switchColor()
+            y--
+            x = 1
         }
-        return color
-
+        const obj = {
+            color,
+            position: ([x, y] as [number, number])
+        }
+        x++
+        return obj
     })
 })()
 

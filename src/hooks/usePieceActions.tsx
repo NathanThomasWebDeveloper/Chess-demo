@@ -52,7 +52,7 @@ const usePieceActions: UsePieceActions = (piecesToRender) => {
     }, [piecesToRender])
 
     const mock_highlightedSquares = [
-        [1, 3], [5, 3], [8, 8], [3, 8]
+        [1, 1], [5, 3], [8, 8], [3, 8]
     ]
     return [piecesToRenderWithEmitters, mock_highlightedSquares]
 }

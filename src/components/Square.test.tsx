@@ -4,12 +4,17 @@ import {shallow} from 'enzyme';
 import {findByTestAttr} from "../testing/utils";
 
 const defaultProps = {
-    color: "white"
+    color: "white",
+    pieceSelected: false,
+    highlighted: false
+
 }
 
 interface Props {
     color: string,
-    children?: any,
+    position?: [number, number],
+    pieceSelected?: boolean,
+    highlighted?: boolean,
     key?: string
 }
 
@@ -26,5 +31,11 @@ const setup = (props = {}) => {
 test('renders without error', () => {
     const wrapper = setup()
     const component = findByTestAttr(wrapper, 'board-square')
+    expect(component.length).toBe(1)
+})
+
+test('highlight possible moves of selected', () => {
+    const wrapper = setup({highlighted: true})
+    const component = findByTestAttr(wrapper, 'square-highlight')
     expect(component.length).toBe(1)
 })
