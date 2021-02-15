@@ -1,18 +1,42 @@
-import {pieceToRender, PieceToRenderWithEmitters} from "../typescript/types";
+import {PieceName, pieceToRender, PieceToRenderWithEmitters} from "../typescript/types";
 import {useEffect, useState} from "react";
 import usePrevious from "./usePrevious";
+import {validPiecePositions} from "../functions/PieceFuncs";
+
+
+interface Selected {
+    position: [number, number],
+    name: PieceName
+}
+
+interface Moved {
+    id: string,
+    from: [number, number]
+}
 
 interface UsePieceActions {
     (piecesToRender: pieceToRender[]): [
-            null | PieceToRenderWithEmitters[],
-        number[][]
-    ]
+            PieceToRenderWithEmitters[] | null,
+            [number, number][] | null]
 }
 
 const usePieceActions: UsePieceActions = (piecesToRender) => {
 
     const [piecesToRenderWithEmitters, setPiecesToRenderWithEmitters] = useState<null | PieceToRenderWithEmitters[]>(null)
+    const [highlighted, setHighlighted] = useState<null | [number, number][]>(null)
     const prev = usePrevious({piecesToRender})
+    const [selected, setSelected] = useState<null | Selected>(null)
+    const [moved, setMoved] = useState<null | Moved>(null)
+
+    useEffect(() => {
+        if (selected !== null) {
+
+            const potentialPiecePosition = validPiecePositions(selected.name, selected.position).flatMap((data: { positions: [number, number][]; type: string }) => data.positions)
+            setHighlighted(potentialPiecePosition)
+            // setHighlighted(validPiecePositions(selected.name, selected.position)[0].positions)
+        }
+    }, [selected])
+
     useEffect(() => {
         let piecesToAdd = 0
         if (prev !== undefined) {
@@ -34,14 +58,8 @@ const usePieceActions: UsePieceActions = (piecesToRender) => {
                     {
                         ...piecesToRender[i],
                         id,
-                        emitMove: (to: [number, number]) => {
-                            return {
-                                id,
-                                to,
-                                from: piecesToRender[i].position
-                            }
-                        },
-                        emitSelect: () => id,
+                        emitMove: ({id, from}: Moved) => setMoved({id, from}),
+                        emitSelect: ({position, name}: Selected) => setSelected({position, name}),
                         inPlay: true
                     }
                 )
@@ -51,9 +69,7 @@ const usePieceActions: UsePieceActions = (piecesToRender) => {
 
     }, [piecesToRender])
 
-    const mock_highlightedSquares = [
-        [1, 1], [5, 3], [8, 8], [3, 8]
-    ]
-    return [piecesToRenderWithEmitters, mock_highlightedSquares]
+
+    return [piecesToRenderWithEmitters, highlighted]
 }
 export default usePieceActions

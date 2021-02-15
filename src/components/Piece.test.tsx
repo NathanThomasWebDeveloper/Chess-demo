@@ -16,7 +16,8 @@ const defaultProps: PiecesWithEmittersAndSize = {
     squareSize: 100,
     id: "_324234242344",
     inPlay: true,
-    emitSelect: () => "_324234242344",
+    emitSelect: () => () => {
+    },
     emitMove: () => ({
         id: "_324234242344",
         from: [1, 2],

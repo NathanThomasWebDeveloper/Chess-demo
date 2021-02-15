@@ -26,11 +26,11 @@ export const boardSpecs = (() => {
     })
 })()
 
-type PlacementContraints = {
+type PlacementConstraints = {
     [key: string]: number[][];
 };
 
-export const placementContraints: PlacementContraints = {
+export const placementConstraints: PlacementConstraints = {
     // not 1st nor 8th row
     PAWN: [...Array(8).fill(null).map((position, index) => [1 + index, 8]),
         ...Array(8).fill(null).map((position, index) => [1 + index, 1])]

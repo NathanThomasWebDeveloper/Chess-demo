@@ -21,9 +21,10 @@ const Board: board = ({piecesToRender}) => {
                 <div data-test={"component-board"} style={{height: boardSize, width: boardSize}}
                      className={styles.Board}>
                     {boardSpecs.map((boardSpec, index) => {
-                        const highlighted = Boolean(highlightedPositions.find(position => position[0] === boardSpec.position[0] && position[1] === boardSpec.position[1]))
+                        const highlighted = highlightedPositions ? Boolean(highlightedPositions.find(position => position[0] === boardSpec.position[0] && position[1] === boardSpec.position[1])) : false
                         return (
-                            <Square key={boardSpec.color + index} color={boardSpec.color} highlighted={highlighted} position={boardSpec.position}/>
+                            <Square key={boardSpec.color + index} color={boardSpec.color} highlighted={highlighted}
+                                    position={boardSpec.position}/>
                         )
                     })}
                 </div>

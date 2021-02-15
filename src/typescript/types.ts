@@ -11,10 +11,10 @@ export interface PieceToRenderWithEmitters extends pieceToRender {
     id: string,
     inPlay: boolean,
     emitMove: {
-        (to: [number, number]): Move
+        (to: { from: [number, number]; to: [number, number]; id: string }): Move
     }
     emitSelect: {
-        (): string
+        (p: { name: "KING" | "QUEEN" | "ROOK" | "BISHOP" | "KNIGHT" | "PAWN"; position: [number, number] }): Function
     }
 }
 

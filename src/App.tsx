@@ -3,7 +3,7 @@ import {PieceName, pieceToRender} from "./typescript/types";
 import PieceButton from "./components/PieceButton";
 import styles from './App.module.scss'
 import {useState} from "react";
-import {placementContraints} from "./constants";
+import {placementConstraints} from "./constants";
 
 
 function App() {
@@ -55,15 +55,14 @@ function App() {
 
                 }
 
-                let placementContraint: false | [number, number][] = false;
-
-                if (placementContraints.hasOwnProperty(pieceName)) {
-                    placementContraint = (placementContraints[pieceName] as [number, number][])
+                let placementConstraint
+                if (placementConstraints.hasOwnProperty(pieceName)) {
+                    placementConstraint = (placementConstraints[pieceName] as [number, number][])
                 }
 
                 const newPiece: pieceToRender = {
                     name: "PAWN",
-                    position: findLocation(placementContraint),
+                    position: findLocation((placementConstraint as [number, number][])),
                     color: "WHITE"
                 }
 
@@ -74,8 +73,6 @@ function App() {
                 } else {
                     return [newPiece]
                 }
-
-
             }
         )
     }
