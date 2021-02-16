@@ -4,7 +4,6 @@ import {shallow} from 'enzyme';
 import {findByTestAttr} from "../testing/utils";
 import {PiecesWithEmittersAndSize} from "../typescript/types";
 
-
 export interface piece {
     (props: PiecesWithEmittersAndSize): JSX.Element
 }
@@ -16,6 +15,8 @@ const defaultProps: PiecesWithEmittersAndSize = {
     squareSize: 100,
     id: "_324234242344",
     inPlay: true,
+    topOffset: 20,
+    leftOffset: 20,
     emitSelect: () => () => {
     },
     emitMove: () => ({

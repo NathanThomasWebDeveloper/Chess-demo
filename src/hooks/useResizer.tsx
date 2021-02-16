@@ -1,18 +1,9 @@
-import {useMeasure} from "react-use";
-import {useEffect, useState} from "react";
-import {UseMeasureRef} from "react-use/lib/useMeasure";
+import {useEffect, useRef, useState} from "react";
+import useMeasure from "use-measure";
 
-interface UseResizer {
-    (minBoardSize?: number): [
-        UseMeasureRef,
-        number,
-            number | null
-    ]
-}
-
-const useResizer: UseResizer = (minBoardSize = 300) => {
-
-    const [ref, {width, height}] = useMeasure();
+const useResizer: (minBoardSize?: number) => [React.RefObject<HTMLElement>, number, number | null, number | null, number | null] = (minBoardSize = 300) => {
+    const ref = useRef<HTMLElement>(null)
+    const {width, height} = useMeasure((ref));
     const [boardSize, setBoardSize] = useState<number>(minBoardSize);
     const [squareSize, setSquareSize] = useState<null | number>(null);
 
@@ -20,8 +11,17 @@ const useResizer: UseResizer = (minBoardSize = 300) => {
         const max = (width > height) ? height : width
         setBoardSize(max)
         setSquareSize(max / 8)
+
     }, [width, height])
 
-    return [ref, boardSize, squareSize]
+    let top = null
+    let left = null
+
+    const bounds = ref?.current?.getBoundingClientRect()
+    if (bounds !== undefined) {
+        left = bounds.left
+        top = bounds.top
+    }
+    return [ref, boardSize, squareSize, top, left]
 }
 export default useResizer

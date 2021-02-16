@@ -43,6 +43,9 @@ export const validPiecePositions = (piece: PieceName, currentPosition: [number, 
     })
 }
 
+export const ClientXYtoBoardSquare = (squareSize: number, [x, y]: [number, number]) => [Math.ceil(x/squareSize), 8-Math.floor(y/squareSize)]
+
+
 
 
 

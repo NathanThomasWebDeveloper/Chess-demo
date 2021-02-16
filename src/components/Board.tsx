@@ -1,4 +1,4 @@
-import React, {RefObject} from 'react';
+import React, {MutableRefObject} from 'react';
 import styles from './Board.module.scss'
 import {boardSpecs} from '../constants';
 import Square from "./Square";
@@ -9,14 +9,14 @@ import usePieceActions from "../hooks/usePieceActions";
 
 const Board: board = ({piecesToRender}) => {
 
-    const [ref, boardSize, squareSize] = useResizer()
+    const [ref, boardSize, squareSize, top, left] = useResizer()
     const [piecesToRenderWithEmitters, highlightedPositions] = usePieceActions(piecesToRender)
 
-    const pieceElements = squareSize && piecesToRenderWithEmitters && piecesToRenderWithEmitters.map(({...props}) =>
-        <Piece key={props.name + props.position[0] + props.position[1]} {...props} squareSize={squareSize}/>)
+    const pieceElements = squareSize && top && left && piecesToRenderWithEmitters && piecesToRenderWithEmitters.map(({...props}) =>
+        <Piece key={props.name + props.position[0] + props.position[1]} {...props} topOffset={top} leftOffset={left} squareSize={squareSize}/>)
     return (<>
             <div
-                ref={ref as string | ((instance: HTMLDivElement | null) => void) | RefObject<HTMLDivElement> | null | undefined}
+                ref={(ref as MutableRefObject<any>)}
                 data-test={"component-container"} className={styles.Container}>
                 <div data-test={"component-board"} style={{height: boardSize, width: boardSize}}
                      className={styles.Board}>

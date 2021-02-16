@@ -11,7 +11,8 @@ interface Selected {
 
 interface Moved {
     id: string,
-    from: [number, number]
+    from: [number, number],
+    to: [number, number]
 }
 
 interface UsePieceActions {
@@ -30,12 +31,36 @@ const usePieceActions: UsePieceActions = (piecesToRender) => {
 
     useEffect(() => {
         if (selected !== null) {
-
             const potentialPiecePosition = validPiecePositions(selected.name, selected.position).flatMap((data: { positions: [number, number][]; type: string }) => data.positions)
             setHighlighted(potentialPiecePosition)
             // setHighlighted(validPiecePositions(selected.name, selected.position)[0].positions)
+        } else {
+            setHighlighted(null)
         }
     }, [selected])
+
+    useEffect(() => {
+        if (moved !== null) {
+            // check valid position
+            // update piece
+            if (piecesToRenderWithEmitters !== null) {
+                const index = piecesToRenderWithEmitters.findIndex(piece => piece.id === moved.id)
+                if (index !== -1) {
+                    const newPieces = [...piecesToRenderWithEmitters]
+                    newPieces[index] = {...newPieces[index], position: moved.to}
+                    setPiecesToRenderWithEmitters(newPieces)
+                } else {
+                    console.error(`piece with index ${moved.id} not found`)
+                }
+            } else {
+                console.error("piecesToRenderWithEmitters is null")
+            }
+            // reset moved
+            setMoved(null)
+            // reset selected
+            setSelected(null)
+        }
+    }, [moved, piecesToRenderWithEmitters])
 
     useEffect(() => {
         let piecesToAdd = 0
@@ -58,8 +83,8 @@ const usePieceActions: UsePieceActions = (piecesToRender) => {
                     {
                         ...piecesToRender[i],
                         id,
-                        emitMove: ({id, from}: Moved) => setMoved({id, from}),
-                        emitSelect: ({position, name}: Selected) => setSelected({position, name}),
+                        emitMove: (obj: Moved) => setMoved(obj),
+                        emitSelect: (obj: Selected) => setSelected(obj),
                         inPlay: true
                     }
                 )

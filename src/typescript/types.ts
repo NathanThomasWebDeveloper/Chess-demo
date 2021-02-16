@@ -19,7 +19,9 @@ export interface PieceToRenderWithEmitters extends pieceToRender {
 }
 
 export interface PiecesWithEmittersAndSize extends PieceToRenderWithEmitters {
-    squareSize: number
+    squareSize: number,
+    topOffset: number,
+    leftOffset: number
 }
 
 export interface Move {
