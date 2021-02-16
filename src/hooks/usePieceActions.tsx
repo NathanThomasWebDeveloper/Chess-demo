@@ -1,7 +1,8 @@
 import {PieceName, pieceToRender, PieceToRenderWithEmitters} from "../typescript/types";
-import {useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import usePrevious from "./usePrevious";
 import {validPiecePositions} from "../functions/PieceFuncs";
+import context from "../context";
 
 
 interface Selected {
@@ -22,7 +23,7 @@ interface UsePieceActions {
 }
 
 const usePieceActions: UsePieceActions = (piecesToRender) => {
-
+    const playingColor = useContext(context)
     const [piecesToRenderWithEmitters, setPiecesToRenderWithEmitters] = useState<null | PieceToRenderWithEmitters[]>(null)
     const [highlighted, setHighlighted] = useState<null | [number, number][]>(null)
     const prev = usePrevious({piecesToRender})
@@ -30,37 +31,79 @@ const usePieceActions: UsePieceActions = (piecesToRender) => {
     const [moved, setMoved] = useState<null | Moved>(null)
 
     useEffect(() => {
-        if (selected !== null) {
-            const potentialPiecePosition = validPiecePositions(selected.name, selected.position).flatMap((data: { positions: [number, number][]; type: string }) => data.positions)
-            setHighlighted(potentialPiecePosition)
-            // setHighlighted(validPiecePositions(selected.name, selected.position)[0].positions)
-        } else {
+        if (piecesToRenderWithEmitters !== null && selected !== null) {
+            const validPiecePositionsByType: { [key: string]: [number, number][] } = {}
+            validPiecePositions(selected.name, selected.position).forEach(data => {
+                validPiecePositionsByType[data.type] = data.positions
+            })
+            let arr: [number, number][] = []
+
+            if (selected.name === 'PAWN') {
+                for (const type in validPiecePositionsByType) {
+                    let obstructed = false
+                    let shouldAdd = true
+                    validPiecePositionsByType[type].forEach(validPiecePositionsByType => {
+                        if (!obstructed) {
+                            if (type === 'DIAGONAL') {
+                                shouldAdd = false
+                            }
+                            const occupied = piecesToRenderWithEmitters.find(piece => {
+                                return validPiecePositionsByType[0] === piece.position[0] &&
+                                    validPiecePositionsByType[1] === piece.position[1]
+                            })
+
+                            if (occupied) {
+                                shouldAdd = false
+                                if (type !== 'DIAGONAL') {
+                                    obstructed = true
+                                }
+                                if (occupied.color !== playingColor) {
+                                    if (type === 'DIAGONAL') {
+                                        shouldAdd = true
+                                    }
+                                }
+                            }
+                            if (shouldAdd) {
+                                (arr as [number, number][]).push(validPiecePositionsByType)
+                            }
+                        }
+                    })
+                }
+            }
+            setHighlighted(arr)
+        }
+        if (selected === null) {
             setHighlighted(null)
         }
-    }, [selected])
+    }, [selected, piecesToRenderWithEmitters, playingColor])
 
     useEffect(() => {
         if (moved !== null) {
             // check valid position
-            // update piece
-            if (piecesToRenderWithEmitters !== null) {
-                const index = piecesToRenderWithEmitters.findIndex(piece => piece.id === moved.id)
-                if (index !== -1) {
-                    const newPieces = [...piecesToRenderWithEmitters]
-                    newPieces[index] = {...newPieces[index], position: moved.to}
-                    setPiecesToRenderWithEmitters(newPieces)
+            if (Boolean(highlighted?.find(validSquare => validSquare[0] === moved.to[0] && validSquare[1] === moved.to[1]))) {
+                // update piece
+                if (piecesToRenderWithEmitters !== null) {
+                    const index = piecesToRenderWithEmitters.findIndex(piece => piece.id === moved.id)
+                    if (index !== -1) {
+                        const newPieces = [...piecesToRenderWithEmitters]
+                        newPieces[index] = {...newPieces[index], position: moved.to}
+                        setPiecesToRenderWithEmitters(newPieces)
+                        // fixme delete piece it takes
+                    } else {
+                        console.error(`piece with index ${moved.id} not found`)
+                    }
                 } else {
-                    console.error(`piece with index ${moved.id} not found`)
+                    console.error("piecesToRenderWithEmitters is null")
                 }
+                // reset moved
+                setMoved(null)
+                // reset selected
+                setSelected(null)
             } else {
-                console.error("piecesToRenderWithEmitters is null")
+                console.warn("invalid move")
             }
-            // reset moved
-            setMoved(null)
-            // reset selected
-            setSelected(null)
         }
-    }, [moved, piecesToRenderWithEmitters])
+    }, [moved, piecesToRenderWithEmitters, highlighted])
 
     useEffect(() => {
         let piecesToAdd = 0

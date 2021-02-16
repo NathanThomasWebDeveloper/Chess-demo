@@ -1,10 +1,10 @@
 import {useEffect, useRef, useState} from "react";
 import useMeasure from "use-measure";
 
-const useResizer: (minBoardSize?: number) => [React.RefObject<HTMLElement>, number, number | null, number | null, number | null] = (minBoardSize = 300) => {
+const useResizer: (defaultBoardSize?: number) => [React.RefObject<HTMLElement>, number, number | null, number | null, number | null] = (defaultBoardSize = 500) => {
     const ref = useRef<HTMLElement>(null)
     const {width, height} = useMeasure((ref));
-    const [boardSize, setBoardSize] = useState<number>(minBoardSize);
+    const [boardSize, setBoardSize] = useState<number>(defaultBoardSize);
     const [squareSize, setSquareSize] = useState<null | number>(null);
 
     useEffect(() => {

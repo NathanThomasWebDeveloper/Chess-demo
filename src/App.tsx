@@ -4,10 +4,9 @@ import PieceButton from "./components/PieceButton";
 import styles from './App.module.scss'
 import {useState} from "react";
 import {placementConstraints} from "./constants";
-
+import PlayingColor from "./context";
 
 function App() {
-
     const [pieces, setPieces] = useState<null | pieceToRender[]>([{
         name: "PAWN",
         position: ([3, 7] as [number, number]),
@@ -80,8 +79,10 @@ function App() {
     const props = {click: (pieceName: PieceName) => clickHandler(pieceName)}
     return (
         <div data-test={"App"} className={styles.App}>
-            {pieces && (<Board piecesToRender={pieces}/>)}
-            <PieceButton {...props} />
+            <PlayingColor.Provider value={"WHITE"}>
+                {pieces && (<Board piecesToRender={pieces}/>)}
+                <PieceButton {...props} />
+            </PlayingColor.Provider>
         </div>
     );
 }

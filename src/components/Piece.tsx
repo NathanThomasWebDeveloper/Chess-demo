@@ -1,8 +1,9 @@
 import {piece} from "./Piece.test";
 import styles from "./Piece.module.scss";
 import Pawn from '../assets/images/pawn.svg';
-import React, {useState} from "react";
+import React, {useContext, useState} from "react";
 import {ClientXYtoBoardSquare} from "../functions/PieceFuncs";
+import context from "../context";
 
 const Piece: piece = ({
                           color,
@@ -16,6 +17,7 @@ const Piece: piece = ({
                           emitSelect
                       }) => {
     const [isDragging, setIsDragging] = useState(false)
+    const playingColor = useContext(context)
     const dragEndHandler = (e: React.DragEvent<HTMLImageElement>) => {
         e.dataTransfer.effectAllowed = "copyMove";
         emitMove({
@@ -45,19 +47,19 @@ const Piece: piece = ({
     };
 
     let styImg: { filter: string } = {
-        filter: color === 'BLACK' ? 'brightness(0%)' : 'unset'
+        filter: color !== playingColor ? 'brightness(0%)' : 'unset'
     };
 
     return (<div style={sty} data-test={"component-piece"} className={styles.Piece}>
-        <img draggable={color === 'WHITE'} data-test={"piece-img"}
-             onClick={color === 'WHITE' ? () => emitSelect({position, name}) : () => {
+        <img draggable={color === playingColor} data-test={"piece-img"}
+             onClick={color === playingColor ? () => emitSelect({position, name}) : () => {
              }}
-             onDragStart={color === 'WHITE' ? () => {
+             onDragStart={color === playingColor ? () => {
                  setIsDragging(true);
                  emitSelect({position, name})
              } : () => {
              }}
-             onDragEnd={color === 'WHITE' ? (e) => {
+             onDragEnd={color === playingColor ? (e) => {
                  setIsDragging(false);
                  dragEndHandler(e)
              } : () => {

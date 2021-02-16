@@ -11,7 +11,8 @@ interface pieceToRender {
 }
 
 interface Props {
-    piecesToRender: pieceToRender[]
+    piecesToRender: pieceToRender[],
+    playingColor?: Color
 }
 
 export interface board {
@@ -23,7 +24,8 @@ export const defaultProps: Props = { // fixme delete export
         name: "PAWN",
         position: ([1, 1] as [number, number]),
         color: "BLACK"
-    }]
+    }],
+    playingColor: "WHITE"
 }
 
 const examples = {
@@ -121,7 +123,7 @@ test('renders n piece components equal to piecesToRender received to board as pr
     }
     ]
 
-    const wrapper = mount(<Board piecesToRender={piecesToRender}/>)
+    const wrapper = mount(<Board playingColor={"WHITE"} piecesToRender={piecesToRender}/>)
     const components = findByTestAttr(wrapper, 'component-piece')
     expect(components.length).toBe(piecesToRender.length)
 
