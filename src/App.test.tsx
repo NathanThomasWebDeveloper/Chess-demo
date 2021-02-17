@@ -1,7 +1,7 @@
 import React from 'react';
 import App from './App';
 import {shallow} from 'enzyme';
-import {findByTestAttr} from "./testing/utils";
+import {findByTestAttr} from "./testing/utils.test";
 
 const defaultProps = {}
 

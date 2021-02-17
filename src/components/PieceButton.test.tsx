@@ -1,7 +1,7 @@
 import React from 'react';
 import PieceButton from './PieceButton';
 import {shallow} from 'enzyme';
-import {findByTestAttr} from "../testing/utils";
+import {findByTestAttr} from "../testing/utils.test";
 
 interface Props {
     click: any

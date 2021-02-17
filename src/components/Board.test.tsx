@@ -1,6 +1,6 @@
 import React from 'react';
 import {shallow, mount} from 'enzyme';
-import {findByTestAttr} from "../testing/utils";
+import {findByTestAttr} from "../testing/utils.test";
 import Board from './Board';
 import {PieceName, Color} from "../typescript/types";
 

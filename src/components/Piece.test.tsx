@@ -1,7 +1,7 @@
 import React from 'react';
 import Piece from './Piece';
 import {shallow} from 'enzyme';
-import {findByTestAttr} from "../testing/utils";
+import {findByTestAttr} from "../testing/utils.test";
 import {PiecesWithEmittersAndSize} from "../typescript/types";
 
 export interface piece {
