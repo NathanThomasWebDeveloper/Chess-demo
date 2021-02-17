@@ -16,7 +16,6 @@ const Piece: piece = ({
                           emitMove,
                           emitSelect
                       }) => {
-    const [isDragging, setIsDragging] = useState(false)
     const playingColor = useContext(context)
     const dragEndHandler = (e: React.DragEvent<HTMLImageElement>) => {
         e.dataTransfer.effectAllowed = "copyMove";
@@ -50,17 +49,16 @@ const Piece: piece = ({
         filter: color !== playingColor ? 'brightness(0%)' : 'unset'
     };
 
-    return (<div style={sty} data-test={"component-piece"} className={styles.Piece}>
+
+    return (<div  style={sty} data-test={"component-piece"} className={styles.Piece}>
         <img draggable={color === playingColor} data-test={"piece-img"}
              onClick={color === playingColor ? () => emitSelect({position, name}) : () => {
              }}
-             onDragStart={color === playingColor ? () => {
-                 setIsDragging(true);
+             onDragStart={color === playingColor ? (e) => {
                  emitSelect({position, name})
              } : () => {
              }}
              onDragEnd={color === playingColor ? (e) => {
-                 setIsDragging(false);
                  dragEndHandler(e)
              } : () => {
              }}

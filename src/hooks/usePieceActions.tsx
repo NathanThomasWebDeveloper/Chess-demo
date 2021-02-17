@@ -2,6 +2,11 @@ import {PieceName, pieceToRender, PieceToRenderWithEmitters} from "../typescript
 import {useContext, useEffect, useState} from "react";
 import usePrevious from "./usePrevious";
 import {validPiecePositions} from "../functions/PieceFuncs";
+// @ts-ignore
+import CaptureSound from "../assets/sounds/capture";
+// @ts-ignore
+import MoveSound from "../assets/sounds/move";
+
 import context from "../context";
 
 
@@ -23,6 +28,8 @@ interface UsePieceActions {
 }
 
 const usePieceActions: UsePieceActions = (piecesToRender) => {
+    const [captureSound] = useState<HTMLAudioElement>(new Audio(CaptureSound))
+    const [moveSound] = useState<HTMLAudioElement>(new Audio(MoveSound))
     const playingColor = useContext(context)
     const [piecesToRenderWithEmitters, setPiecesToRenderWithEmitters] = useState<null | PieceToRenderWithEmitters[]>(null)
     const [highlighted, setHighlighted] = useState<null | [number, number][]>(null)
@@ -83,12 +90,18 @@ const usePieceActions: UsePieceActions = (piecesToRender) => {
             if (Boolean(highlighted?.find(validSquare => validSquare[0] === moved.to[0] && validSquare[1] === moved.to[1]))) {
                 // update piece
                 if (piecesToRenderWithEmitters !== null) {
-                    const index = piecesToRenderWithEmitters.findIndex(piece => piece.id === moved.id)
+                    const newPieces = [...piecesToRenderWithEmitters]
+                    const toTakeIndex = newPieces.findIndex(piece => piece.position[0] === moved.to[0] && piece.position[1] === moved.to[1])
+                    if (toTakeIndex !== -1) {
+                        captureSound.play()
+                        newPieces.splice(toTakeIndex, 1);
+                    } else {
+                        moveSound.play()
+                    }
+                    const index = newPieces.findIndex(piece => piece.id === moved.id)
                     if (index !== -1) {
-                        const newPieces = [...piecesToRenderWithEmitters]
                         newPieces[index] = {...newPieces[index], position: moved.to}
                         setPiecesToRenderWithEmitters(newPieces)
-                        // fixme delete piece it takes
                     } else {
                         console.error(`piece with index ${moved.id} not found`)
                     }
@@ -103,9 +116,10 @@ const usePieceActions: UsePieceActions = (piecesToRender) => {
                 console.warn("invalid move")
             }
         }
-    }, [moved, piecesToRenderWithEmitters, highlighted])
+    }, [moved, piecesToRenderWithEmitters, highlighted, captureSound, moveSound])
 
     useEffect(() => {
+
         let piecesToAdd = 0
         if (prev !== undefined) {
             piecesToAdd = piecesToRender.length - prev.piecesToRender.length

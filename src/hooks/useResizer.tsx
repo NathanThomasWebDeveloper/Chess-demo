@@ -1,4 +1,4 @@
-import {useEffect, useRef, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import useMeasure from "use-measure";
 
 const useResizer: (defaultBoardSize?: number) => [React.RefObject<HTMLElement>, number, number | null, number | null, number | null] = (defaultBoardSize = 500) => {
