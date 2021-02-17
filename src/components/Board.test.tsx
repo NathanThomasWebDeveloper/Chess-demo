@@ -48,19 +48,4 @@ test('render 64 squares', () => {
     expect(components.length).toBe(64)
 })
 
-test('renders n piece components equal to piecesToRender received to board as props', async () => {
-    const piecesToRender: pieceToRender[] = [{
-        name: "PAWN",
-        position: ([3, 7] as [number, number]),
-        color: "BLACK"
-    }
-    ]
-
-    const wrapper = mount(<Board playingColor={"WHITE"} piecesToRender={piecesToRender}/>)
-    const components = findByTestAttr(wrapper, 'component-piece')
-    expect(components.length).toBe(piecesToRender.length)
-
-})
-
-
 
