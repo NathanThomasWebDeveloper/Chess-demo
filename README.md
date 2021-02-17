@@ -9,7 +9,8 @@ To demonstrate how a chessboard could be created that is 100% responsive to the 
 - Add a white pawn on click
 - All pawn can move around aboard
 ## Stack
-React with custom hooks
-CSS modules with SCSS
+- TypeScript
+- React with custom hooks
+- CSS modules with SCSS
 ## Installation
 npm install
