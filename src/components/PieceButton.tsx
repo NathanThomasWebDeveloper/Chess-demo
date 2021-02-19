@@ -8,8 +8,8 @@ const PieceButton: pieceButton = ({click}) => {
     return (<div data-test={"component-pieceButton"} className={styles.PieceButton}>
         <h1>Select a Piece to Add</h1>
         <p>The piece will appear in a valid random square on the board.</p>
-        <div className={styles.ButtonContainer}>
-            <button onClick={pawnCount < 8 ? () => {
+        <div data-test={'piece-button-container'} className={styles.ButtonContainer}>
+            <button data-test={"button-create button-create-pawn"} onClick={pawnCount < 8 ? () => {
                 click("PAWN")
                 setCount(pawnCount + 1)
             } : () => {

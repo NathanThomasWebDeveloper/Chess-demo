@@ -50,7 +50,7 @@ const Piece: piece = ({
     };
 
 
-    return (<div  style={sty} data-test={"component-piece"} className={styles.Piece}>
+    return (<div  style={sty} data-test={`component-piece component-piece-${name.toLowerCase()} component-piece-${name.toLowerCase()}-${color.toLowerCase()}`} className={styles.Piece}>
         <img draggable={color === playingColor} data-test={"piece-img"}
              onClick={color === playingColor ? () => emitSelect({position, name}) : () => {
              }}

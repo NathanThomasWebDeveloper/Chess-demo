@@ -33,7 +33,7 @@ describe('sizes are correct', () => {
                 }
             })
     })
-    it('size of each pieces is equal to or less than than a square', function() {
+    it('size of each piece is equal to or less than than a square', function() {
         cy.getBySel('board-square').should('be.visible')
             .then(elements => {
                 const height = elements[0].getBoundingClientRect().height
@@ -47,3 +47,43 @@ describe('sizes are correct', () => {
             })
     })
 })
+
+describe('Add pieces', () => {
+    const maximumPieces = {
+        'pawn': 8
+        }
+
+    beforeEach(() => {
+        cy.visit(host)
+    })
+    it('add pieces on click', function () {
+        for (const piece in maximumPieces) {
+            for (let i = 1; i <= maximumPieces[piece]; i++) {
+                cy.getBySel('button-create-' + piece).should('be.visible')
+                    .click()
+                cy.getBySel('component-piece-' + piece + '-white').should('have.length', i)
+            }
+        }
+    })
+    it('added pieces do not exceed max', function () {
+        for (const piece in maximumPieces) {
+            for (let i = 1; i <= maximumPieces[piece]+1; i++) {
+                cy.getBySel('button-create-' + piece).should('be.visible')
+                    .click()
+            }
+            cy.getBySel('component-piece-' + piece + '-white').should('have.length', maximumPieces[piece])
+        }
+    })
+    it('UI shows number of pieces created from buttons', function () {
+        for (const piece in maximumPieces) {
+            for (let i = 1; i <= maximumPieces[piece]; i++) {
+
+                cy.getBySel('button-create-' + piece).should('be.visible')
+                .click()
+            cy.getBySel('piece-button-container').should('be.visible')
+                .should('contain', String(i))
+        }}
+    })
+})
+
+
